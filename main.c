@@ -13,45 +13,105 @@
  * Now, write your code! You got this! 💪🔥
  */
 
-#include <stdio.h>
+ #include <stdio.h>
 
-#define MAX_ROOMS 5  //  max number of rooms
-
-// Function prototypes
-void initializeSystem();
-void displayMenu();
-void controlLights();
-void readTemperature();
-void detectMotion();
-void securitySystem();
-void analyzeHouseStatus();
-
-int main() {
-    
-
-    return 0;
-}
-
+ void initializeSystem(int lights[], int temps[], int motion[], int locks[], int rooms);
+ void toggleLight(int lights[], int room);
+ void readTemperature(int temps[], int room);
+ void checkMotion(int motion[], int room);
+ void lockUnlockSecurity(int locks[], int room);
+ void houseStatus(int lights[], int temps[], int motion[], int locks[], int rooms);
  
-void initializeSystem() {
-  
-}
-
-void displayMenu() {
-   
-}
-void controlLights() {
-
-}
-void readTemperature() {
-
-}
-void detectMotion() {
-
-}
-void securitySystem() {
-
-}
-void analyzeHouseStatus() {
-
-}
+ int main() {
+     int rooms;
+     printf("Enter number of rooms: ");
+     scanf("%d", &rooms);
+ 
+     int lights[rooms], temps[rooms], motion[rooms], locks[rooms];
+     initializeSystem(lights, temps, motion, locks, rooms);
+     
+     int choice, room;
+     while (1) {
+         printf("\n===== Smart Home Menu =====\n");
+         printf("1. Toggle Light\n");
+         printf("2. Read Temperature\n");
+         printf("3. Check Motion Sensor\n");
+         printf("4. Lock/Unlock Security System\n");
+         printf("5. House Status Summary\n");
+         printf("6. Exit\n");
+         printf("Enter your choice: ");
+         scanf("%d", &choice);
+         
+         switch (choice) {
+             case 1:
+                 printf("Enter room number to toggle light (1-%d): ", rooms);
+                 scanf("%d", &room);
+                 toggleLight(lights, room - 1);
+                 break;
+             case 2:
+                 printf("Enter room number to read temperature (1-%d): ", rooms);
+                 scanf("%d", &room);
+                 readTemperature(temps, room - 1);
+                 break;
+             case 3:
+                 printf("Enter room number to check motion (1-%d): ", rooms);
+                 scanf("%d", &room);
+                 checkMotion(motion, room - 1);
+                 break;
+             case 4:
+                 printf("Enter room number to lock/unlock (1-%d): ", rooms);
+                 scanf("%d", &room);
+                 lockUnlockSecurity(locks, room - 1);
+                 break;
+             case 5:
+                 houseStatus(lights, temps, motion, locks, rooms);
+                 break;
+             case 6:
+                 printf("Exiting...\n");
+                 return 0;
+             default:
+                 printf("Invalid choice, try again.\n");
+         }
+     }
+     return 0;
+ }
+ 
+ void initializeSystem(int lights[], int temps[], int motion[], int locks[], int rooms) {
+     for (int i = 0; i < rooms; i++) {
+         lights[i] = 0;
+         temps[i] = 22 + (i % 5); 
+         motion[i] = 0;
+         locks[i] = 1;
+     }
+     printf("System initialized.\n");
+ }
+ 
+ void toggleLight(int lights[], int room) {
+     lights[room] = !lights[room];
+     printf("Light in Room %d is now %s.\n", room + 1, lights[room] ? "ON" : "OFF");
+ }
+ 
+ void readTemperature(int temps[], int room) {
+     printf("Temperature in Room %d: %d°C\n", room + 1, temps[room]);
+ }
+ 
+ void checkMotion(int motion[], int room) {
+     printf("Motion in Room %d: %s\n", room + 1, motion[room] ? "Detected" : "No Motion");
+ }
+ 
+ void lockUnlockSecurity(int locks[], int room) {
+     locks[room] = !locks[room];
+     printf("Room %d is now %s.\n", room + 1, locks[room] ? "Locked" : "Unlocked");
+ }
+ 
+ void houseStatus(int lights[], int temps[], int motion[], int locks[], int rooms) {
+     printf("\nHouse Status:\n");
+     for (int i = 0; i < rooms; i++) {
+         printf("- Room %d: Light %s, Temp %d°C, %s, %s\n", i + 1,
+                lights[i] ? "ON" : "OFF",
+                temps[i],
+                motion[i] ? "Motion Detected" : "No Motion",
+                locks[i] ? "Locked" : "Unlocked");
+     }
+ }
+ 
